@@ -1,4 +1,4 @@
-# Zex
+# Zex (/ziː.ɛks/)
 
 An easy-to-use http router for Go.
 
