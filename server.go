@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/bndrmrtn/zex/zx"
 )
 
 // Server is the default server for the application
@@ -58,7 +60,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 // handleRoute handles the route
 func (s *Server) handleRoute(route Route, w http.ResponseWriter, r *http.Request, params map[string]string) {
-	r = r.WithContext(context.WithValue(r.Context(), ContextParams, params))
+	r = r.WithContext(context.WithValue(r.Context(), zx.ContextParams, params))
 	handler := s.chainMiddlewares(route.Handler(), route.Middlewares()...)
 	handler(w, r)
 }

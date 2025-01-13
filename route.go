@@ -9,18 +9,27 @@ import (
 	"github.com/fatih/color"
 )
 
+// Route represents a route
 type Route interface {
+	// Name sets the route name
 	Name(name string)
+	// GetName returns the route name
 	GetName() string
+	// Method returns the route method
 	Method() string
+	// Path returns the route path
 	Path() string
+	// NormalizedPaths returns all possible normalized paths
 	NormalizedPaths() []string
 
+	// Handler returns the route handler
 	Handler() http.HandlerFunc
+	// Middlewares returns the route middlewares
 	Middlewares() []MiddlewareFunc
 
 	// allRoute returns all possible routes and their parts
 	allRoutesParts() [][]RoutePart
+	// comparePath compares a path with all possible routes
 	comparePath(router CompleteRouter, path string) (bool, map[string]string)
 }
 
@@ -108,6 +117,7 @@ func (r *route) Middlewares() []MiddlewareFunc {
 	return r.middlewares
 }
 
+// parse parses the route path
 func (r *route) parse() {
 	for _, path := range r.paths {
 		p := r.parsePath(path)
@@ -183,29 +193,31 @@ func (r *route) compareSinglePath(router CompleteRouter, route []RoutePart, path
 			if part.Value != pathParts[i] {
 				return false, nil
 			}
-		} else {
-			value := pathParts[i]
+			continue
+		}
 
-			for _, v := range part.Validators {
-				fn, err := router.getValidator(v)
-				if err != nil {
-					color.Red("Validator not found: %s", v)
-					os.Exit(1)
-				}
+		value := pathParts[i]
 
-				value, err = fn(value)
-				if err != nil {
-					return false, nil
-				}
+		for _, v := range part.Validators {
+			fn, err := router.getValidator(v)
+			if err != nil {
+				color.Red("Validator not found: %s", v)
+				os.Exit(1)
 			}
 
-			params[part.Value] = value
+			value, err = fn(value)
+			if err != nil {
+				return false, nil
+			}
 		}
+
+		params[part.Value] = value
 	}
 
 	return true, params
 }
 
+// createOptionalRoutes creates all possible routes from a route with optional parameters
 func createOptionalRoutes(route string) []string {
 	var routes []string
 

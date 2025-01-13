@@ -128,7 +128,7 @@ func (r *router) Dump() {
 	logRoutes(r.routes)
 }
 
-func (r *router) RegisterRouteParamValidator(name string, fn RouteParamValidatorFunc) {
+func (r *router) RegisterParamValidator(name string, fn RouteParamValidatorFunc) {
 	if _, ok := r.validators[name]; ok {
 		color.Red("Error: route param validator \"%s\" already exists.", name)
 		os.Exit(1)

@@ -12,7 +12,7 @@ import (
 type RouterParamValidator interface {
 	// RouterParamValidator is an interface that allows you to register custom route parameter validators.
 	// default validators: int, bool, uuid, alpha, alphanumeric.
-	RegisterRouteParamValidator(name string, fn RouteParamValidatorFunc)
+	RegisterParamValidator(name string, fn RouteParamValidatorFunc)
 }
 
 // RouteParamValidatorFunc is a function that validates a route parameter.
@@ -20,11 +20,11 @@ type RouteParamValidatorFunc func(value string) (string, error)
 
 // registerDefaultRouteValidators registers the default route parameter validators.
 func registerDefaultRouteValidators(router RouterParamValidator) {
-	router.RegisterRouteParamValidator("int", validateInt)
-	router.RegisterRouteParamValidator("bool", validateBool)
-	router.RegisterRouteParamValidator("uuid", validateUUIDv4)
-	router.RegisterRouteParamValidator("alpha", validateAlpha)
-	router.RegisterRouteParamValidator("alphanumeric", validateAlphaNumeric)
+	router.RegisterParamValidator("int", validateInt)
+	router.RegisterParamValidator("bool", validateBool)
+	router.RegisterParamValidator("uuid", validateUUIDv4)
+	router.RegisterParamValidator("alpha", validateAlpha)
+	router.RegisterParamValidator("alphanumeric", validateAlphaNumeric)
 }
 
 // validateInt validates an integer.
