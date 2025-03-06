@@ -29,8 +29,9 @@ func (e *Error) Status() int {
 }
 
 // SetInternal sets the internal error
-func (e *Error) SetInternal(err error) {
+func (e *Error) SetInternal(err error) error {
 	e.internal = err
+	return e
 }
 
 // Internal returns the internal error
