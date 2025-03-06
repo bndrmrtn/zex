@@ -2,7 +2,7 @@ package zex
 
 import "net/http"
 
-const Version = "1.0.0"
+const Version = "1.0.1"
 
 // App is the main struct of the application
 type App struct {
